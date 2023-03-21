@@ -96,7 +96,7 @@ void Dot::render(SDL_Rect& camera, LTexture& gDotTexture, SDL_Renderer& gRendere
 
 bool Dot::touchesWall(SDL_Rect box, Map* map)
 {
-	bool checkForWalls = true;
+	bool checkForWalls = false;
 	if (checkForWalls) {
 
 		if (map->checkTerrain(box)) {
