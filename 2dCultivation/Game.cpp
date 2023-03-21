@@ -13,22 +13,22 @@ and may not be redistributed without written permission.*/
 #include "Defs.h"
 #include "Timer.h"
 #include <iostream>
-
+#include "Map.h"
 
 
 //Starts up SDL and creates window
 bool init();
 
 //Loads media
-bool loadMedia(Tile* tiles[]);
+bool loadMedia();
 
 //Frees media and shuts down SDL
-void close(Tile* tiles[]);
+void close();
 
 
 
 //Sets tiles from tile map
-bool setTiles(Tile* tiles[]);
+bool setTiles();
 
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
@@ -41,7 +41,7 @@ LTexture gDotTexture;
 LTexture gTileTexture;
 SDL_Rect gTileClips[TOTAL_TILE_SPRITES];
 
-
+Map map;
 Timer timer;
 
 bool init()
@@ -99,7 +99,7 @@ bool init()
 	return success;
 }
 
-bool loadMedia(Tile* tiles[])
+bool loadMedia()
 {
 	//Loading success flag
 	bool success = true;
@@ -119,7 +119,7 @@ bool loadMedia(Tile* tiles[])
 	}
 
 	//Load tile map
-	if (!setTiles(tiles))
+	if (!setTiles())
 	{
 		printf("Failed to load tile set!\n");
 		success = false;
@@ -128,17 +128,9 @@ bool loadMedia(Tile* tiles[])
 	return success;
 }
 
-void close(Tile* tiles[])
+void close()
 {
-	//Deallocate tiles
-	for (int i = 0; i < TOTAL_TILES; ++i)
-	{
-		if (tiles[i] != NULL)
-		{
-			delete tiles[i];
-			tiles[i] = NULL;
-		}
-	}
+	 map.closeMap();
 
 	//Free loaded images
 	gDotTexture.free();
@@ -156,28 +148,8 @@ void close(Tile* tiles[])
 }
 
 
-bool setTiles(Tile* tiles[])
+bool setTiles()
 {
-	//Success flag
-	bool tilesLoaded = true;
-
-	//The tile offsets
-	int x = 0, y = 0;
-
-	//Open the map
-	std::ifstream map("lazy.map");
-
-	//If the map couldn't be loaded
-	if (map.fail())
-	{
-		printf("Unable to load map file!\n");
-		tilesLoaded = false;
-	}
-	else
-	{
-		//Clip the sprite sheet
-		if (tilesLoaded)
-		{
 			gTileClips[TILE_RED].x = 0;
 			gTileClips[TILE_RED].y = 0;
 			gTileClips[TILE_RED].w = TILE_WIDTH;
@@ -237,61 +209,14 @@ bool setTiles(Tile* tiles[])
 			gTileClips[TILE_BOTTOMRIGHT].y = 160;
 			gTileClips[TILE_BOTTOMRIGHT].w = TILE_WIDTH;
 			gTileClips[TILE_BOTTOMRIGHT].h = TILE_HEIGHT;
-		}
-		//Initialize the tiles
-		for (int i = 0; i < TOTAL_TILES; ++i)
-		{
-			//Determines what kind of tile will be made
-			int tileType = -1;
-
-			//Read tile from map file
-			map >> tileType;
-
-			//If the was a problem in reading the map
-			if (map.fail())
-			{
-				//Stop loading map
-				printf("Error loading map: Unexpected end of file!\n");
-				tilesLoaded = false;
-				break;
-			}
-
-			//If the number is a valid tile number
-			if ((tileType >= 0) && (tileType < TOTAL_TILE_SPRITES))
-			{
-				tiles[i] = new Tile(x, y, tileType, gTileClips[tileType]);
-			}
-			//If we don't recognize the tile type
-			else
-			{
-				//Stop loading map
-				printf("Error loading map: Invalid tile type at %d!\n", i);
-				tilesLoaded = false;
-				break;
-			}
-
-			//Move to next tile spot
-			x += TILE_WIDTH;
-
-			//If we've gone too far
-			if (x >= LEVEL_WIDTH)
-			{
-				//Move back
-				x = 0;
-
-				//Move to the next row
-				y += TILE_HEIGHT;
-			}
+		
+			if (!map.generateMap(gTileClips)) {
+				printf("Failed to generate map!\n");
 		}
 
-
-	}
-
-	//Close the file
-	map.close();
 
 	//If the map was loaded fine
-	return tilesLoaded;
+	return true;
 }
 
 
@@ -305,11 +230,9 @@ int main(int argc, char* args[])
 	}
 	else
 	{
-		//The level tiles
-		Tile* tileSet[TOTAL_TILES];
 
 		//Load media
-		if (!loadMedia(tileSet))
+		if (!loadMedia())
 		{
 			printf("Failed to load media!\n");
 		}
@@ -347,7 +270,7 @@ int main(int argc, char* args[])
 				}
 
 				//Move the dot
-				dot.move(tileSet);
+				dot.move(&map);
 				dot.setCamera(camera);
 
 				//Clear screen
@@ -355,10 +278,7 @@ int main(int argc, char* args[])
 				SDL_RenderClear(gRenderer);
 
 				//Render level
-				for (int i = 0; i < TOTAL_TILES; ++i)
-				{
-					tileSet[i]->render(camera, gTileTexture, *gRenderer);
-				}
+				map.render(camera, gTileTexture, *gRenderer);
 
 				//Render dot
 				dot.render(camera, gDotTexture, *gRenderer);
@@ -369,7 +289,7 @@ int main(int argc, char* args[])
 		}
 
 		//Free resources and close SDL
-		close(tileSet);
+		close();
 	}
 
 	return 0;

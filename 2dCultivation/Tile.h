@@ -22,7 +22,7 @@ public:
 	SDL_Rect getBox();
 
 	//Box collision detector
-	bool checkCollision(SDL_Rect a, SDL_Rect b);
+	bool checkCollision(SDL_Rect a);
 
 private:
 	//The attributes of the tile

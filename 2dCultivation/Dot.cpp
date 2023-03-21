@@ -40,13 +40,13 @@ void Dot::handleEvent(SDL_Event& e)
 	}
 }
 
-void Dot::move(Tile* tiles[])
+void Dot::move(Map* map)
 {
 	//Move the dot left or right
 	mBox.x += mVelX;
 
 	//If the dot went too far to the left or right or touched a wall
-	if ((mBox.x < 0) || (mBox.x + DOT_WIDTH > LEVEL_WIDTH) || touchesWall(mBox, tiles))
+	if ((mBox.x < 0) || (mBox.x + DOT_WIDTH > LEVEL_WIDTH) || touchesWall(mBox, map))
 	{
 		//move back
 		mBox.x -= mVelX;
@@ -56,7 +56,7 @@ void Dot::move(Tile* tiles[])
 	mBox.y += mVelY;
 
 	//If the dot went too far up or down or touched a wall
-	if ((mBox.y < 0) || (mBox.y + DOT_HEIGHT > LEVEL_HEIGHT) || touchesWall(mBox, tiles))
+	if ((mBox.y < 0) || (mBox.y + DOT_HEIGHT > LEVEL_HEIGHT) || touchesWall(mBox, map))
 	{
 		//move back
 		mBox.y -= mVelY;
@@ -94,20 +94,15 @@ void Dot::render(SDL_Rect& camera, LTexture& gDotTexture, SDL_Renderer& gRendere
 	gDotTexture.render(mBox.x - camera.x, mBox.y - camera.y, gRenderer);
 }
 
-bool Dot::touchesWall(SDL_Rect box, Tile* tiles[])
+bool Dot::touchesWall(SDL_Rect box, Map* map)
 {
-	//Go through the tiles
-	for (int i = 0; i < TOTAL_TILES; ++i)
-	{
-		//If the tile is a wall type tile
-		if ((tiles[i]->getType() >= TILE_CENTER) && (tiles[i]->getType() <= TILE_TOPLEFT))
-		{
-			//If the collision box touches the wall tile
-			if (checkCollision(box, tiles[i]->getBox()))
-			{
-				return true;
-			}
+	bool checkForWalls = true;
+	if (checkForWalls) {
+
+		if (map->checkTerrain(box)) {
+			return true;
 		}
+
 	}
 
 	//If no wall tiles were touched

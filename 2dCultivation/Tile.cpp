@@ -17,7 +17,7 @@ Tile::Tile(int x, int y, int tileType, SDL_Rect clip)
 void Tile::render(SDL_Rect& camera, LTexture& gTileTexture, SDL_Renderer& gRenderer)
 {
 	//If the tile is on screen
-	if (checkCollision(camera, mBox))
+	if (checkCollision(camera))
 	{
 		//Show the tile
 		gTileTexture.render(mBox.x - camera.x, mBox.y - camera.y, gRenderer, &textureClip);
@@ -34,7 +34,7 @@ SDL_Rect Tile::getBox()
 	return mBox;
 }
 
-bool Tile::checkCollision(SDL_Rect a, SDL_Rect b)
+bool Tile::checkCollision(SDL_Rect a)
 {
 	//The sides of the rectangles
 	int leftA, leftB;
@@ -49,10 +49,10 @@ bool Tile::checkCollision(SDL_Rect a, SDL_Rect b)
 	bottomA = a.y + a.h;
 
 	//Calculate the sides of rect B
-	leftB = b.x;
-	rightB = b.x + b.w;
-	topB = b.y;
-	bottomB = b.y + b.h;
+	leftB = mBox.x;
+	rightB = mBox.x + mBox.w;
+	topB = mBox.y;
+	bottomB = mBox.y + mBox.h;
 
 	//If any of the sides from A are outside of B
 	if (bottomA <= topB)

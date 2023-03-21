@@ -3,6 +3,7 @@
 #include "Tile.h"
 #include "LTexture.h"
 #include "Defs.h"
+#include "Map.h"
 //The dot that will move around on the screen
 class Dot
 {
@@ -21,7 +22,7 @@ public:
 	void handleEvent(SDL_Event& e);
 
 	//Moves the dot and check collision against tiles
-	void move(Tile* tiles[]);
+	void move(Map* map);
 
 	//Centers the camera over the dot
 	void setCamera(SDL_Rect& camera);
@@ -30,7 +31,7 @@ public:
 	void render(SDL_Rect& camera, LTexture& gDotTexture, SDL_Renderer& gRenderer);
 
 	//Checks collision box against set of tiles
-	bool touchesWall(SDL_Rect box, Tile* tiles[]);
+	bool touchesWall(SDL_Rect box, Map* map);
 
 	//Box collision detector
 	bool checkCollision(SDL_Rect a, SDL_Rect b);
