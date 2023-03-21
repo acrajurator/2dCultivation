@@ -13,7 +13,7 @@ public:
 	static const int DOT_HEIGHT = 20;
 
 	//Maximum axis velocity of the dot
-	static const int DOT_VEL = 10;
+	static const int DOT_VEL = 640;
 
 	//Initializes the variables
 	Dot();
@@ -22,7 +22,7 @@ public:
 	void handleEvent(SDL_Event& e);
 
 	//Moves the dot and check collision against tiles
-	void move(Map* map);
+	void move(Map* map, float timeStep);
 
 	//Centers the camera over the dot
 	void setCamera(SDL_Rect& camera);
@@ -39,7 +39,8 @@ public:
 private:
 	//Collision box of the dot
 	SDL_Rect mBox;
+	SDL_Rect testBox;
 
 	//The velocity of the dot
-	int mVelX, mVelY;
+	float mVelX, mVelY;
 };

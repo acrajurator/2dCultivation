@@ -1,16 +1,32 @@
 #pragma once
-#include <chrono> // for std::chrono functions
+#include <SDL_timer.h>
 class Timer
 {
-public:
-	void reset();
+	public:
+		//Initializes variables
+		Timer();
 
-	double elapsed() const;
+		//The various clock actions
+		void start();
+		void stop();
+		void pause();
+		void unpause();
 
-private:
-	using Clock = std::chrono::steady_clock;
-	using Second = std::chrono::duration<double, std::ratio<1> >;
+		//Gets the timer's time
+		Uint32 getTicks();
 
-	std::chrono::time_point<Clock> m_beg{ Clock::now() };
-};
+		//Checks the status of the timer
+		bool isStarted();
+		bool isPaused();
 
+	private:
+		//The clock time when the timer started
+		Uint32 mStartTicks;
+
+		//The ticks stored when the timer was paused
+		Uint32 mPausedTicks;
+
+		//The timer status
+		bool mPaused;
+		bool mStarted;
+	};

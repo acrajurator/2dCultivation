@@ -78,3 +78,38 @@ bool Tile::checkCollision(SDL_Rect a)
 	//If none of the sides from A are outside B
 	return true;
 }
+
+int Tile::checkCollisionDirection(SDL_Rect a)
+{
+	//The sides of the rectangles
+	int leftA, leftB;
+	int rightA, rightB;
+	int topA, topB;
+	int bottomA, bottomB;
+
+	//Calculate the sides of rect A
+	leftA = a.x;
+	rightA = a.x + a.w;
+	topA = a.y;
+	bottomA = a.y + a.h;
+
+	//Calculate the sides of rect B
+	leftB = mBox.x;
+	rightB = mBox.x + mBox.w;
+	topB = mBox.y;
+	bottomB = mBox.y + mBox.h;
+
+	int numbers[4]{ abs(topA - bottomB), abs(bottomA - topB), abs(leftA - rightB), abs(rightA - leftB) };
+	int smallest{100};
+	int smallestIndex{-1};
+	for (int i = 0; i < 4; ++i)
+	{
+		if (numbers[i] < smallest)
+		{
+			smallest = numbers[i];
+			smallestIndex = i;
+		}
+	}
+
+	return smallestIndex;
+}

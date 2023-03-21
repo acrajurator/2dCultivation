@@ -247,12 +247,14 @@ int main(int argc, char* args[])
 			//Level camera
 			SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 
+
+
 			//While application is running
 			while (!quit)
 			{
 
-				std::cout << "Time taken: " << timer.elapsed() << " seconds\n";
-				timer.reset();
+			//	std::cout << "Time taken: " << timer.getTicks() / 1000.f << " seconds\n";
+
 				//Handle events on queue
 				while (SDL_PollEvent(&e) != 0)
 				{
@@ -267,7 +269,10 @@ int main(int argc, char* args[])
 				}
 
 				//Move the dot
-				dot.move(&map);
+				float timeStep = timer.getTicks() / 1000.f;
+				dot.move(&map, timeStep);
+				timer.start();
+
 				dot.setCamera(camera);
 
 				//Clear screen

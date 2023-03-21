@@ -1,4 +1,5 @@
 #include "Dot.h"
+#include <iostream>
 Dot::Dot()
 {
 	//Initialize the collision box
@@ -6,7 +7,8 @@ Dot::Dot()
 	mBox.y = 0;
 	mBox.w = DOT_WIDTH;
 	mBox.h = DOT_HEIGHT;
-
+	testBox.w = DOT_WIDTH;
+	testBox.h = DOT_HEIGHT;
 	//Initialize the velocity
 	mVelX = 0;
 	mVelY = 0;
@@ -40,27 +42,37 @@ void Dot::handleEvent(SDL_Event& e)
 	}
 }
 
-void Dot::move(Map* map)
+void Dot::move(Map* map, float timeStep)
 {
-	//Move the dot left or right
-	mBox.x += mVelX;
+	testBox.y = mBox.y;
+	testBox.x = mBox.x;
 
-	//If the dot went too far to the left or right or touched a wall
-	if ((mBox.x < 0) || (mBox.x + DOT_WIDTH > LEVEL_WIDTH) || touchesWall(mBox, map))
+	testBox.x += mVelX * timeStep;
+	testBox.y += mVelY * timeStep;
+
+	bool moveY = true;
+	bool moveX = true;
+
+	if ((testBox.x < 0) || (testBox.x + DOT_WIDTH > LEVEL_WIDTH))
 	{
-		//move back
-		mBox.x -= mVelX;
+		moveX = false;
 	}
-
-	//Move the dot up or down
-	mBox.y += mVelY;
-
-	//If the dot went too far up or down or touched a wall
-	if ((mBox.y < 0) || (mBox.y + DOT_HEIGHT > LEVEL_HEIGHT) || touchesWall(mBox, map))
+	if ((testBox.y < 0) || (testBox.y + DOT_HEIGHT > LEVEL_HEIGHT))
 	{
-		//move back
-		mBox.y -= mVelY;
+		moveY = false;
 	}
+	if (touchesWall(testBox, map)) {
+		if (mVelX != 0)
+			moveX = false;
+		if (mVelY != 0)
+			moveY = false;
+	}
+	if (moveY)
+		mBox.y = testBox.y;
+
+	if (moveX)
+		mBox.x = testBox.x;
+
 }
 
 void Dot::setCamera(SDL_Rect& camera)
@@ -96,7 +108,7 @@ void Dot::render(SDL_Rect& camera, LTexture& gDotTexture, SDL_Renderer& gRendere
 
 bool Dot::touchesWall(SDL_Rect box, Map* map)
 {
-	bool checkForWalls = false;
+	bool checkForWalls = true;
 	if (checkForWalls) {
 
 		if (map->checkTerrain(box)) {

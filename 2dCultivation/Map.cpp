@@ -1,4 +1,5 @@
 #include "Map.h"
+#include <iostream>
 
 Map::Map()
 {
@@ -68,11 +69,14 @@ bool Map::checkTerrain(SDL_Rect a)
 		{
 
 			//If the tile is a wall type tile
-			if ((worldMap[i][j]->getType() >= TILE_CENTER) && (worldMap[i][j]->getType() <= TILE_TOPLEFT))
+			if ((worldMap[i][j]->getType() == TILE_CENTER))
+			//if ((worldMap[i][j]->getType() >= TILE_CENTER) && (worldMap[i][j]->getType() <= TILE_TOPLEFT))
 			{
 				//If the collision box touches the wall tile
 				if (worldMap[i][j]->checkCollision(a))
 				{
+
+					std::cout << "Collision: " << worldMap[i][j]->checkCollisionDirection(a) << "\n"; 
 					return true;
 				}
 			}

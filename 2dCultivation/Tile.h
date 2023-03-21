@@ -23,6 +23,8 @@ public:
 
 	//Box collision detector
 	bool checkCollision(SDL_Rect a);
+	//Box collision detector
+	int checkCollisionDirection(SDL_Rect a);
 
 private:
 	//The attributes of the tile
