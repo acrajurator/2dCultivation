@@ -146,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defs.h" />
+    <ClInclude Include="Direction.h" />
     <ClInclude Include="Dot.h" />
     <ClInclude Include="LTexture.h" />
     <ClInclude Include="Map.h" />

@@ -16,11 +16,7 @@ bool Map::generateMap(SDL_Rect* rect)
 	std::mt19937 mt{ std::random_device{}() };
 	std::uniform_int_distribution<> die11{ 0, 11 };
 
-	//The tile offsets
 	int x = 0, y = 0;
-
-	//Determines what kind of tile will be made
-
 
 	for (int i = 0; i < TILE_ROW; ++i)
 	{
@@ -28,36 +24,59 @@ bool Map::generateMap(SDL_Rect* rect)
 			int tileType = -1;
 			tileType = die11(mt);
 
-			worldMap[i][j] = new Tile(x, y, tileType, rect[tileType]);
+			worldMap[i][j] = Tile(x, y, tileType, rect[tileType]);
 
-			//Move to next tile spot
 			x += TILE_WIDTH;
 
 		}
-		//Move back
 		x = 0;
-		//Move to the next row
 		y += TILE_HEIGHT;
 	}
+	for (int i = 0; i < TILE_ROW; ++i)
+	{
+		for (int j = 0; j < TILE_COL; ++j) 
+		{
+			for (int k = 0; k < 4; ++k)
+			{
+
+				if (k == 0 && i > 0) {
+					worldMap[i][j].setNeighbour(worldMap[i-1][j], Direction::up);
+
+				}
+				if (k == 1 && i < TILE_COL-1) {
+					worldMap[i][j].setNeighbour(worldMap[i+1][j], Direction::down);
+				}
+				if (k == 2 && j > 0) {
+					worldMap[i][j].setNeighbour(worldMap[i][j-1], Direction::left);
+
+				}
+				if (k == 3 && j < TILE_ROW-1) {
+					worldMap[i][j].setNeighbour(worldMap[i][j+1], Direction::right);
+
+				}
+			}
+		}
+	}
+
+
 	generateMap = true;
 	return generateMap;
 }
 
 void Map::closeMap()
 {
-	//Deallocate tiles
-	for (int i = 0; i < TILE_ROW; ++i)
-	{
-		for (int j = 0; j < TILE_COL; ++j) {
+	//for (int i = 0; i < TILE_ROW; ++i)
+	//{
+	//	for (int j = 0; j < TILE_COL; ++j) {
 
-		if (worldMap[i][j] != NULL)
-		{
-			delete worldMap[i][j];
-			worldMap[i][j] = NULL;
-		}
+	//	if (worldMap[i][j] != NULL)
+	//	{
+	//		//delete worldMap[i][j];
+	//		worldMap[i][j] = NULL;
+	//	}
 
-		}
-	}
+	//	}
+	//}
 }
 
 bool Map::checkTerrain(SDL_Rect a)
@@ -68,15 +87,13 @@ bool Map::checkTerrain(SDL_Rect a)
 		for (int j = 0; j < TILE_COL; ++j) 
 		{
 
-			//If the tile is a wall type tile
-			if ((worldMap[i][j]->getType() == TILE_CENTER))
+			if ((worldMap[i][j].getType() == TILE_CENTER))
 			//if ((worldMap[i][j]->getType() >= TILE_CENTER) && (worldMap[i][j]->getType() <= TILE_TOPLEFT))
 			{
-				//If the collision box touches the wall tile
-				if (worldMap[i][j]->checkCollision(a))
+				if (worldMap[i][j].checkCollision(a))
 				{
 
-					std::cout << "Collision: " << worldMap[i][j]->checkCollisionDirection(a) << "\n"; 
+					std::cout << "Collision: " << worldMap[i][j].checkCollisionDirection(a) << "\n"; 
 					return true;
 				}
 			}
@@ -93,7 +110,12 @@ void Map::render(SDL_Rect& camera, LTexture& gTileTexture, SDL_Renderer& gRender
 	{
 		for (int j = 0; j < TILE_COL; ++j)
 		{
-			worldMap[i][j]->render(camera, gTileTexture, gRenderer);
+			worldMap[i][j].render(camera, gTileTexture, gRenderer);
 		}
 	}
+}
+
+Tile& Map::getTile(int x, int y)
+{
+	return worldMap[x][y];
 }

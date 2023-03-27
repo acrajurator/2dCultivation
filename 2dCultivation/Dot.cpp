@@ -2,86 +2,75 @@
 #include <iostream>
 Dot::Dot()
 {
-	//Initialize the collision box
 	mBox.x = 0;
 	mBox.y = 0;
 	mBox.w = DOT_WIDTH;
 	mBox.h = DOT_HEIGHT;
-	testBox.w = DOT_WIDTH;
-	testBox.h = DOT_HEIGHT;
-	//Initialize the velocity
-	mVelX = 0;
-	mVelY = 0;
+	direction = Direction::none;
+	currentTile = NULL;
+	startLocation = 0;
+}
+
+Dot::~Dot()
+{
+	currentTile = NULL;
 }
 
 void Dot::handleEvent(SDL_Event& e)
 {
-	//If a key was pressed
-	if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
+	if (e.type == SDL_KEYDOWN && e.key.repeat == 0 && direction == Direction::none)
 	{
-		//Adjust the velocity
 		switch (e.key.keysym.sym)
 		{
-		case SDLK_UP: mVelY -= DOT_VEL; break;
-		case SDLK_DOWN: mVelY += DOT_VEL; break;
-		case SDLK_LEFT: mVelX -= DOT_VEL; break;
-		case SDLK_RIGHT: mVelX += DOT_VEL; break;
+		case SDLK_UP: moveDirection(Direction::up);
+			break;
+		case SDLK_DOWN:  moveDirection(Direction::down);
+			break;
+		case SDLK_LEFT:  moveDirection(Direction::left);
+			break;
+		case SDLK_RIGHT:  moveDirection(Direction::right);
+			break;
 		}
 	}
-	//If a key was released
-	else if (e.type == SDL_KEYUP && e.key.repeat == 0)
-	{
-		//Adjust the velocity
-		switch (e.key.keysym.sym)
-		{
-		case SDLK_UP: mVelY += DOT_VEL; break;
-		case SDLK_DOWN: mVelY -= DOT_VEL; break;
-		case SDLK_LEFT: mVelX += DOT_VEL; break;
-		case SDLK_RIGHT: mVelX -= DOT_VEL; break;
-		}
-	}
+
 }
 
 void Dot::move(Map* map, float timeStep)
 {
-	testBox.y = mBox.y;
-	testBox.x = mBox.x;
 
-	testBox.x += mVelX * timeStep;
-	testBox.y += mVelY * timeStep;
-
-	bool moveY = true;
-	bool moveX = true;
-
-	if ((testBox.x < 0) || (testBox.x + DOT_WIDTH > LEVEL_WIDTH))
-	{
-		moveX = false;
+	if (direction == Direction::up) {
+		mBox.y -= DOT_VEL * timeStep;
+		if (mBox.y < startLocation - TILE_HEIGHT) {
+			setTile(currentTile->getNeighbour(Direction::up));
+		}
 	}
-	if ((testBox.y < 0) || (testBox.y + DOT_HEIGHT > LEVEL_HEIGHT))
-	{
-		moveY = false;
+	else if (direction == Direction::left) {
+		mBox.x -= DOT_VEL * timeStep;
+		if (mBox.x < startLocation - TILE_WIDTH) {
+			setTile(currentTile->getNeighbour(Direction::left));
+		}
 	}
-	if (touchesWall(testBox, map)) {
-		if (mVelX != 0)
-			moveX = false;
-		if (mVelY != 0)
-			moveY = false;
-	}
-	if (moveY)
-		mBox.y = testBox.y;
+	else if (direction == Direction::down) {
+		mBox.y += DOT_VEL * timeStep;
+		if (mBox.y > startLocation + TILE_HEIGHT) {
+			setTile(currentTile->getNeighbour(Direction::down));
+		}
 
-	if (moveX)
-		mBox.x = testBox.x;
+	}
+	else if (direction == Direction::right) {
+		mBox.x += DOT_VEL * timeStep;
+		if (mBox.x > startLocation + TILE_WIDTH) {
+			setTile(currentTile->getNeighbour(Direction::right));
+		}
+	}
 
 }
 
 void Dot::setCamera(SDL_Rect& camera)
 {
-	//Center the camera over the dot
 	camera.x = (mBox.x + DOT_WIDTH / 2) - SCREEN_WIDTH / 2;
 	camera.y = (mBox.y + DOT_HEIGHT / 2) - SCREEN_HEIGHT / 2;
 
-	//Keep the camera in bounds
 	if (camera.x < 0)
 	{
 		camera.x = 0;
@@ -102,7 +91,6 @@ void Dot::setCamera(SDL_Rect& camera)
 
 void Dot::render(SDL_Rect& camera, LTexture& gDotTexture, SDL_Renderer& gRenderer)
 {
-	//Show the dot
 	gDotTexture.render(mBox.x - camera.x, mBox.y - camera.y, gRenderer);
 }
 
@@ -117,31 +105,26 @@ bool Dot::touchesWall(SDL_Rect box, Map* map)
 
 	}
 
-	//If no wall tiles were touched
 	return false;
 }
 
 bool Dot::checkCollision(SDL_Rect a, SDL_Rect b)
 {
-	//The sides of the rectangles
 	int leftA, leftB;
 	int rightA, rightB;
 	int topA, topB;
 	int bottomA, bottomB;
 
-	//Calculate the sides of rect A
 	leftA = a.x;
 	rightA = a.x + a.w;
 	topA = a.y;
 	bottomA = a.y + a.h;
 
-	//Calculate the sides of rect B
 	leftB = b.x;
 	rightB = b.x + b.w;
 	topB = b.y;
 	bottomB = b.y + b.h;
 
-	//If any of the sides from A are outside of B
 	if (bottomA <= topB)
 	{
 		return false;
@@ -162,6 +145,34 @@ bool Dot::checkCollision(SDL_Rect a, SDL_Rect b)
 		return false;
 	}
 
-	//If none of the sides from A are outside B
 	return true;
+}
+
+void Dot::setTile(Tile& tile)
+{
+		SDL_Rect tileBox = tile.getBox();
+		currentTile = &tile;
+
+		mBox.y = tileBox.y+(TILE_WIDTH/2);
+		mBox.x = tileBox.x+(TILE_HEIGHT/2);
+		direction = Direction::none;
+	
+
+
+}
+
+void Dot::moveDirection(Direction desiredDirection)
+{
+	if (currentTile->validNeighbour(desiredDirection))
+	{
+		if (desiredDirection == Direction::up || desiredDirection == Direction::down) {
+			startLocation = mBox.y;
+		}
+		else {
+			startLocation = mBox.x;
+
+		}
+		direction = desiredDirection;
+	}
+
 }
