@@ -87,16 +87,16 @@ bool Map::checkTerrain(SDL_Rect a)
 		for (int j = 0; j < TILE_COL; ++j) 
 		{
 
-			if ((worldMap[i][j].getType() == TILE_CENTER))
+			//if ((worldMap[i][j].getType() == TILE_CENTER))
 			//if ((worldMap[i][j]->getType() >= TILE_CENTER) && (worldMap[i][j]->getType() <= TILE_TOPLEFT))
-			{
+			//{
 				if (worldMap[i][j].checkCollision(a))
 				{
 
-					std::cout << "Collision: " << worldMap[i][j].checkCollisionDirection(a) << "\n"; 
+					//std::cout << "Collision: " << worldMap[i][j].checkCollisionDirection(a) << "\n"; 
 					return true;
 				}
-			}
+			//}
 
 		}
 	}

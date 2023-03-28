@@ -17,24 +17,7 @@ Dot::~Dot()
 	currentTile = NULL;
 }
 
-void Dot::handleEvent(SDL_Event& e)
-{
-	if (e.type == SDL_KEYDOWN && e.key.repeat == 0 && direction == Direction::none)
-	{
-		switch (e.key.keysym.sym)
-		{
-		case SDLK_UP: moveDirection(Direction::up);
-			break;
-		case SDLK_DOWN:  moveDirection(Direction::down);
-			break;
-		case SDLK_LEFT:  moveDirection(Direction::left);
-			break;
-		case SDLK_RIGHT:  moveDirection(Direction::right);
-			break;
-		}
-	}
 
-}
 
 void Dot::move(Map* map, float timeStep)
 {
@@ -95,19 +78,6 @@ void Dot::render(SDL_Rect& camera, LTexture& gDotTexture, SDL_Renderer& gRendere
 	gDotTexture.render(mBox.x - camera.x, mBox.y - camera.y, gRenderer);
 }
 
-bool Dot::touchesWall(SDL_Rect box, Map* map)
-{
-	bool checkForWalls = true;
-	if (checkForWalls) {
-
-		if (map->checkTerrain(box)) {
-			return true;
-		}
-
-	}
-
-	return false;
-}
 
 bool Dot::checkCollision(SDL_Rect a, SDL_Rect b)
 {
@@ -254,4 +224,9 @@ void Dot::printKnownTilesTypes()
 		std::cout << "TileType: " << knownTiles[x]->getType() << "\n";
 	}
 	std::cout << "-----------------------------: \n";
+}
+
+Direction Dot::getDirection()
+{
+	return direction;
 }

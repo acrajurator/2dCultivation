@@ -139,6 +139,7 @@
   <ItemGroup>
     <ClCompile Include="Dot.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="LTexture.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Tile.cpp" />
@@ -148,6 +149,7 @@
     <ClInclude Include="Defs.h" />
     <ClInclude Include="Direction.h" />
     <ClInclude Include="Dot.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="LTexture.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Tile.h" />

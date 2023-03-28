@@ -1,4 +1,5 @@
 #include "Tile.h"
+#include <iostream>
 
 Tile::Tile()
 {
@@ -82,7 +83,8 @@ bool Tile::checkCollision(SDL_Rect a)
 	{
 		return false;
 	}
-
+	if (a.w == 1)
+	std::cout << "Collision with: " << getType() << " \n";
 	return true;
 }
 

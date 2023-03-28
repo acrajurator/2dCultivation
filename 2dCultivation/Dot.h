@@ -19,15 +19,12 @@ public:
 
 	~Dot();
 
-	void handleEvent(SDL_Event& e);
 
 	void move(Map* map, float timeStep);
 
 	void setCamera(SDL_Rect& camera);
 
 	void render(SDL_Rect& camera, LTexture& gDotTexture, SDL_Renderer& gRenderer);
-
-	bool touchesWall(SDL_Rect box, Map* map);
 
 	bool checkCollision(SDL_Rect a, SDL_Rect b);
 
@@ -38,6 +35,8 @@ public:
 	void updateKnownTiles();
 
 	void printKnownTilesTypes();
+
+	Direction getDirection();
 
 private:
 	SDL_Rect mBox;

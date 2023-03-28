@@ -11,6 +11,7 @@
 #include "Timer.h"
 #include <iostream>
 #include "Map.h"
+#include "Input.h"
 
 
 bool init();
@@ -208,6 +209,7 @@ int main(int argc, char* args[])
 			bool quit = false;
 
 			SDL_Event e;
+			Input input;
 			Dot dot;
 			dot.setTile(map.getTile(1, 1));
 			SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
@@ -226,7 +228,7 @@ int main(int argc, char* args[])
 						quit = true;
 					}
 
-					dot.handleEvent(e);
+					input.handleEvent(e,dot, map);
 				}
 
 				float timeStep = timer.getTicks() / 1000.f;
