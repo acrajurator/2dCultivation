@@ -1,5 +1,4 @@
 #include "Tile.h"
-#include <iostream>
 
 Tile::Tile()
 {
@@ -23,7 +22,7 @@ Tile::Tile(int x, int y, int tileType, SDL_Rect clip)
 
 	mType = tileType;
 	textureClip = clip;
-	tiles[4];
+	
 	for (int i = 0; i < 4; ++i)
 	{
 		tiles[i] = nullptr;
@@ -121,10 +120,7 @@ int Tile::checkCollisionDirection(SDL_Rect a)
 
 Tile& Tile::getNeighbour(Direction direction)
 {
-	for (int i = 0; i < 4; ++i) {
-		if	(tiles[i] == nullptr)
-			std::cout << "nr " << i << " Null border\n";
-	}
+
 
 	if (direction == Direction::up) {
 
@@ -177,3 +173,4 @@ void Tile::setNeighbour(Tile& tile, Direction direction)
 		tiles[3] = &tile;
 	}
 }
+

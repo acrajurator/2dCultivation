@@ -9,6 +9,7 @@ Dot::Dot()
 	direction = Direction::none;
 	currentTile = NULL;
 	startLocation = 0;
+	viewDistance = 1;
 }
 
 Dot::~Dot()
@@ -157,7 +158,8 @@ void Dot::setTile(Tile& tile)
 		mBox.x = tileBox.x+(TILE_HEIGHT/2);
 		direction = Direction::none;
 	
-
+		updateKnownTiles();
+		printKnownTilesTypes();
 
 }
 
@@ -175,4 +177,76 @@ void Dot::moveDirection(Direction desiredDirection)
 		direction = desiredDirection;
 	}
 
+}
+
+void Dot::updateKnownTiles()
+{
+	int distanceUp{ 0 };
+	int distanceDown{ 0 };
+
+	knownTiles.clear();
+	Tile* testTile = currentTile;
+	Tile* testTileUp = currentTile;
+	Tile* testTileDown = currentTile;
+		for (int x = 0; x < viewDistance; ++x) {
+			if (testTile->validNeighbour(Direction::up)) {
+				testTile = &testTile->getNeighbour((Direction::up));
+				knownTiles.push_back(testTile);
+				distanceUp += 1;
+			}
+		}
+		for (int x = 0; x < viewDistance; ++x) {
+			if (testTile->validNeighbour(Direction::down)) {
+				testTile = &testTile->getNeighbour((Direction::down));
+				knownTiles.push_back(testTile);
+				distanceDown += 1;
+			}
+		}
+		for (int x = 0; x < viewDistance; ++x) {
+			if (testTile->validNeighbour(Direction::left)) {
+				testTile = &testTile->getNeighbour((Direction::left));
+				knownTiles.push_back(testTile);
+				testTileUp = testTile;
+				for (int i = 0; i < distanceUp; ++i) {
+					testTileUp = &testTileUp->getNeighbour((Direction::up));
+					knownTiles.push_back(testTileUp);
+				}
+				testTileDown = testTile;
+				for (int i = 0; i < distanceDown; ++i) {
+					testTileDown = &testTileDown->getNeighbour((Direction::down));
+					knownTiles.push_back(testTileDown);
+				}
+
+			}
+		}
+		for (int x = 0; x < viewDistance; ++x) {
+			if (testTile->validNeighbour(Direction::right)) {
+				testTile = &testTile->getNeighbour((Direction::right));
+				knownTiles.push_back(testTile);
+
+				testTileUp = testTile;
+				for (int i = 0; i < distanceUp; ++i) {
+					testTileUp = &testTileUp->getNeighbour((Direction::up));
+					knownTiles.push_back(testTileUp);
+				}
+				testTileDown = testTile;
+				for (int i = 0; i < distanceDown; ++i) {
+					testTileDown = &testTileDown->getNeighbour((Direction::down));
+					knownTiles.push_back(testTileDown);
+				}
+			}
+		}
+		testTile = nullptr;
+		testTileUp = nullptr;
+		testTileDown = nullptr;
+
+		
+}
+
+void Dot::printKnownTilesTypes()
+{
+	for (int x = 0; x < knownTiles.size(); ++x) {
+		std::cout << "TileType: " << knownTiles[x]->getType() << "\n";
+	}
+	std::cout << "-----------------------------: \n";
 }

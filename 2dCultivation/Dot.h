@@ -5,6 +5,7 @@
 #include "Defs.h"
 #include "Map.h"
 #include "Direction.h"
+#include <vector>
 
 class Dot
 {
@@ -34,10 +35,17 @@ public:
 
 	void moveDirection(Direction desiredDirection);
 
+	void updateKnownTiles();
+
+	void printKnownTilesTypes();
+
 private:
 	SDL_Rect mBox;
 
 	Direction direction;
 	Tile* currentTile;
 	int startLocation;
+	int viewDistance;
+
+	std::vector<Tile*> knownTiles;
 };

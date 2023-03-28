@@ -32,6 +32,7 @@ public:
 
 	void setNeighbour(Tile& tile, Direction direction);
 
+
 private:
 	SDL_Rect mBox;
 
@@ -39,5 +40,8 @@ private:
 
 	Tile* tiles[4];
 
+
+
 	int mType;
+
 };
