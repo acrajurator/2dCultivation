@@ -195,6 +195,7 @@ void Dot::updateKnownTiles()
 				distanceUp += 1;
 			}
 		}
+		testTile = currentTile;
 		for (int x = 0; x < viewDistance; ++x) {
 			if (testTile->validNeighbour(Direction::down)) {
 				testTile = &testTile->getNeighbour((Direction::down));
@@ -202,6 +203,8 @@ void Dot::updateKnownTiles()
 				distanceDown += 1;
 			}
 		}
+
+		testTile = currentTile;
 		for (int x = 0; x < viewDistance; ++x) {
 			if (testTile->validNeighbour(Direction::left)) {
 				testTile = &testTile->getNeighbour((Direction::left));
@@ -219,6 +222,8 @@ void Dot::updateKnownTiles()
 
 			}
 		}
+
+		testTile = currentTile;
 		for (int x = 0; x < viewDistance; ++x) {
 			if (testTile->validNeighbour(Direction::right)) {
 				testTile = &testTile->getNeighbour((Direction::right));
