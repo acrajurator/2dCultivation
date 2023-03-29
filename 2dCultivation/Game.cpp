@@ -240,7 +240,7 @@ int main(int argc, char* args[])
 				SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(gRenderer);
 
-				map.render(camera, gTileTexture, *gRenderer);
+				map.render(camera, gTileTexture, *gRenderer, gDotTexture);
 
 				dot.render(camera, gDotTexture, *gRenderer);
 

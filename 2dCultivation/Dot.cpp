@@ -230,3 +230,8 @@ Direction Dot::getDirection()
 {
 	return direction;
 }
+
+void Dot::pickupBonus()
+{
+	currentTile->pickupBonus();
+}

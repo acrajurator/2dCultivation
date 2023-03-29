@@ -15,6 +15,8 @@ void Input::handleEvent(SDL_Event& e, Dot& dot, Map& map, SDL_Rect& camera)
 				break;
 			case SDLK_RIGHT:  dot.moveDirection(Direction::right);
 				break;
+			case SDLK_SPACE: dot.pickupBonus();
+				break;
 			}
 		}
 		if (e.type == SDL_MOUSEBUTTONDOWN)

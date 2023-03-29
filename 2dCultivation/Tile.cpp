@@ -28,12 +28,15 @@ Tile::Tile(int x, int y, int tileType, SDL_Rect clip)
 	{
 		tiles[i] = nullptr;
 	}
+	bonus = true;
 }
-void Tile::render(SDL_Rect& camera, LTexture& gTileTexture, SDL_Renderer& gRenderer)
+void Tile::render(SDL_Rect& camera, LTexture& gTileTexture, SDL_Renderer& gRenderer, LTexture& gDotTexture)
 {
 	if (checkCollision(camera))
 	{
 		gTileTexture.render(mBox.x - camera.x, mBox.y - camera.y, gRenderer, &textureClip);
+		if (bonus)
+			gDotTexture.render(mBox.x - camera.x, mBox.y - camera.y, gRenderer);
 	}
 }
 
@@ -174,5 +177,10 @@ void Tile::setNeighbour(Tile& tile, Direction direction)
 	else if (direction == Direction::right) {
 		tiles[3] = &tile;
 	}
+}
+
+void Tile::pickupBonus()
+{
+	bonus = false;
 }
 

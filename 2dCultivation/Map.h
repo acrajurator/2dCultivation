@@ -17,7 +17,7 @@ public:
 
 	bool checkTerrain(SDL_Rect a);
 
-	void render(SDL_Rect& camera, LTexture& gTileTexture, SDL_Renderer& gRenderer);
+	void render(SDL_Rect& camera, LTexture& gTileTexture, SDL_Renderer& gRenderer, LTexture& gDotTexture);
 
 	Tile& getTile(int x, int y);
 

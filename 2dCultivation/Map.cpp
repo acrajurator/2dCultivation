@@ -104,13 +104,13 @@ bool Map::checkTerrain(SDL_Rect a)
 	return false;
 }
 
-void Map::render(SDL_Rect& camera, LTexture& gTileTexture, SDL_Renderer& gRenderer)
+void Map::render(SDL_Rect& camera, LTexture& gTileTexture, SDL_Renderer& gRenderer, LTexture& gDotTexture)
 {
 	for (int i = 0; i < TILE_ROW; ++i)
 	{
 		for (int j = 0; j < TILE_COL; ++j)
 		{
-			worldMap[i][j].render(camera, gTileTexture, gRenderer);
+			worldMap[i][j].render(camera, gTileTexture, gRenderer, gDotTexture);
 		}
 	}
 }

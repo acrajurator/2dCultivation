@@ -38,6 +38,8 @@ public:
 
 	Direction getDirection();
 
+	void pickupBonus();
+
 private:
 	SDL_Rect mBox;
 

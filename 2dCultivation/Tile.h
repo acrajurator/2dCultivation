@@ -16,7 +16,7 @@ public:
 
 	Tile(int x, int y, int tileType, SDL_Rect clip);
 
-	void render(SDL_Rect& camera, LTexture& gTileTexture, SDL_Renderer& gRenderer);
+	void render(SDL_Rect& camera, LTexture& gTileTexture, SDL_Renderer& gRenderer, LTexture& gDotTexture);
 
 	int getType();
 
@@ -32,6 +32,8 @@ public:
 
 	void setNeighbour(Tile& tile, Direction direction);
 
+	void pickupBonus();
+
 
 private:
 	SDL_Rect mBox;
@@ -41,6 +43,7 @@ private:
 	Tile* tiles[4];
 
 
+	bool bonus;
 
 	int mType;
 
