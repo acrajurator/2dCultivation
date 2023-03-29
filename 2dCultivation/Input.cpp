@@ -1,7 +1,7 @@
 #include "Input.h"
 
 
-void Input::handleEvent(SDL_Event& e, Dot& dot, Map& map)
+void Input::handleEvent(SDL_Event& e, Dot& dot, Map& map, SDL_Rect& camera)
 {
 		if (e.type == SDL_KEYDOWN && e.key.repeat == 0 && dot.getDirection() == Direction::none)
 		{
@@ -26,8 +26,8 @@ void Input::handleEvent(SDL_Event& e, Dot& dot, Map& map)
 			int x, y;
 
 			SDL_GetMouseState(&x, &y);
-			mBox.x = x;
-			mBox.y = y;
+			mBox.x = x + camera.x;
+			mBox.y = y + camera.y;
 			map.checkTerrain(mBox);
 
 		}

@@ -6,7 +6,7 @@ class Input
 {
 public:
 
-	void handleEvent(SDL_Event& e, Dot& dot, Map& map);
+	void handleEvent(SDL_Event& e, Dot& dot, Map& map, SDL_Rect& camera);
 
 };
 

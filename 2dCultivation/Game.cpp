@@ -228,7 +228,7 @@ int main(int argc, char* args[])
 						quit = true;
 					}
 
-					input.handleEvent(e,dot, map);
+					input.handleEvent(e,dot, map, camera);
 				}
 
 				float timeStep = timer.getTicks() / 1000.f;
