@@ -226,5 +226,5 @@ Tile& Tile::getParent()
 bool Tile::compareFCost(Tile* a, Tile* b)
 {
 
-	return a->getFCost() < b->getFCost();
+	return a->getFCost() > b->getFCost();
 }
