@@ -6,6 +6,7 @@
 #include "Direction.h"
 
 
+
 class Tile
 {
 public:
@@ -34,7 +35,15 @@ public:
 
 	void pickupBonus();
 
-
+	void setGCost(double gCost);
+	void setHCost(double hCost);
+	void setFCost(double fCost);
+	double getGCost();
+	double getHCost();
+	double getFCost();
+	void setParent(Tile& parent);
+	Tile& getParent();
+	static bool compareFCost(Tile* a, Tile* b);
 private:
 	SDL_Rect mBox;
 
@@ -46,5 +55,8 @@ private:
 	bool bonus;
 
 	int mType;
-
+	double gCost;
+	double hCost;
+	double fCost;
+	Tile* parent;
 };

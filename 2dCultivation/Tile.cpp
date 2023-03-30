@@ -184,3 +184,47 @@ void Tile::pickupBonus()
 	bonus = false;
 }
 
+void Tile::setGCost(double gCostNew)
+{
+	gCost = gCostNew;
+}
+
+void Tile::setHCost(double hCostNew)
+{
+	hCost = hCostNew;
+}
+
+void Tile::setFCost(double fCostNew)
+{
+	fCost = fCostNew;
+}
+
+double Tile::getGCost()
+{
+	return gCost;
+}
+
+double Tile::getHCost()
+{
+	return hCost;
+}
+
+double Tile::getFCost()
+{
+	return fCost;
+}
+
+void Tile::setParent(Tile& parentNew)
+{
+	parent = &parentNew;
+}
+
+Tile& Tile::getParent()
+{
+	return *parent;
+}
+bool Tile::compareFCost(Tile* a, Tile* b)
+{
+
+	return a->getFCost() < b->getFCost();
+}

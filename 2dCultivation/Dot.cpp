@@ -235,3 +235,8 @@ void Dot::pickupBonus()
 {
 	currentTile->pickupBonus();
 }
+
+Tile& Dot::getCurrentTile()
+{
+	return *currentTile;
+}

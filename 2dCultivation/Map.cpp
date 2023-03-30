@@ -103,6 +103,23 @@ bool Map::checkTerrain(SDL_Rect a)
 
 	return false;
 }
+Tile& Map::getTileClick(int x, int y)
+{
+	SDL_Rect a{ a.x = x, a.y = y };
+	for (int i = 0; i < TILE_ROW; ++i)
+	{
+		for (int j = 0; j < TILE_COL; ++j)
+		{
+			if (worldMap[i][j].checkCollision(a))
+			{ 
+				return worldMap[i][j];
+			}
+
+		}
+	}
+	throw - 1;
+}
+
 
 void Map::render(SDL_Rect& camera, LTexture& gTileTexture, SDL_Renderer& gRenderer, LTexture& gDotTexture)
 {

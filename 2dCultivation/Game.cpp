@@ -12,6 +12,7 @@
 #include <iostream>
 #include "Map.h"
 #include "Input.h"
+#include "AI.h"
 
 
 bool init();
@@ -29,6 +30,7 @@ LTexture gTileTexture;
 SDL_Rect gTileClips[TOTAL_TILE_SPRITES];
 Map map;
 Timer timer;
+AI ai;
 
 bool init()
 {
@@ -228,7 +230,7 @@ int main(int argc, char* args[])
 						quit = true;
 					}
 
-					input.handleEvent(e,dot, map, camera);
+					input.handleEvent(e,dot, map, camera, ai);
 				}
 
 				float timeStep = timer.getTicks() / 1000.f;

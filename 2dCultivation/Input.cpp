@@ -1,7 +1,8 @@
 #include "Input.h"
+#include <iostream>
 
 
-void Input::handleEvent(SDL_Event& e, Dot& dot, Map& map, SDL_Rect& camera)
+void Input::handleEvent(SDL_Event& e, Dot& dot, Map& map, SDL_Rect& camera, AI& ai)
 {
 		if (e.type == SDL_KEYDOWN && e.key.repeat == 0 && dot.getDirection() == Direction::none)
 		{
@@ -22,16 +23,22 @@ void Input::handleEvent(SDL_Event& e, Dot& dot, Map& map, SDL_Rect& camera)
 		if (e.type == SDL_MOUSEBUTTONDOWN)
 		{
 			
-			SDL_Rect mBox;
-			mBox.w = 1;
-			mBox.h = 1;
 			int x, y;
 
 			SDL_GetMouseState(&x, &y);
-			mBox.x = x + camera.x;
-			mBox.y = y + camera.y;
-			map.checkTerrain(mBox);
-
+			x += camera.x;
+			y += camera.y;
+			Tile* dest;
+			try {
+				dest = &map.getTileClick(x, y);
+				std::cout << dest->getType();
+				ai.aStar(dot.getCurrentTile(), *dest);
+			}
+			catch (int x) {
+				std::cerr << "We caught an int exception with value: " << x << '\n';
+			}
+			//
+			dest = nullptr;
 		}
 
 	

@@ -21,6 +21,8 @@ public:
 
 	Tile& getTile(int x, int y);
 
+	Tile& getTileClick(int x, int y);
+
 private:
 
 	Tile worldMap[TILE_ROW][TILE_COL];

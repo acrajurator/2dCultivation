@@ -40,6 +40,8 @@ public:
 
 	void pickupBonus();
 
+	Tile& getCurrentTile();
+
 private:
 	SDL_Rect mBox;
 
