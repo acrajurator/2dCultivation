@@ -7,6 +7,7 @@
 #include "Direction.h"
 #include <vector>
 #include <stack>
+#include "AI.h"
 
 class Dot
 {
@@ -16,7 +17,7 @@ public:
 
 	static const int DOT_VEL = 222;
 
-	Dot();
+	Dot(AI& ai);
 
 	~Dot();
 
@@ -45,9 +46,17 @@ public:
 
 	void setPath(std::stack<Direction> aStar);
 
+	void decisionMaking();
+
+	void lookForCoins();
+
+	void pickUpCoin();
+
 private:
+	AI* ai;
 	SDL_Rect mBox;
 	bool moving;
+	bool busy;
 	Direction direction;
 	Tile* currentTile;
 	int startLocation;

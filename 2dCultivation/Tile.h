@@ -34,6 +34,7 @@ public:
 	void setNeighbour(Tile& tile, Direction direction);
 
 	void pickupBonus();
+	bool getBonus();
 
 	void setGCost(double gCost);
 	void setHCost(double hCost);

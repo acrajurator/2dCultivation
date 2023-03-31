@@ -212,7 +212,7 @@ int main(int argc, char* args[])
 
 			SDL_Event e;
 			Input input;
-			Dot dot;
+			Dot dot{ai};
 			dot.setTile(map.getTile(1, 1));
 			SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 

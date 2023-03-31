@@ -184,6 +184,11 @@ void Tile::pickupBonus()
 	bonus = false;
 }
 
+bool Tile::getBonus()
+{ 
+	return bonus;
+}
+
 void Tile::setGCost(double gCostNew)
 {
 	gCost = gCostNew;

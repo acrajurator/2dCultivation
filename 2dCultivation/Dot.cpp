@@ -1,6 +1,6 @@
 #include "Dot.h"
 #include <iostream>
-Dot::Dot()
+Dot::Dot(AI& aiNew)
 {
 	mBox.x = 0;
 	mBox.y = 0;
@@ -11,11 +11,14 @@ Dot::Dot()
 	startLocation = 0;
 	viewDistance = 1;
 	moving = false;
+	busy = false;
+	ai = &aiNew;
 }
 
 Dot::~Dot()
 {
 	currentTile = NULL;
+	ai = nullptr;
 }
 
 
@@ -27,6 +30,12 @@ void Dot::move(Map* map, float timeStep)
 		path.pop();
 		moving = true;
 		
+	}
+	if (!moving && busy) {
+		pickUpCoin();
+	}
+	else if(!busy && !moving) {
+		decisionMaking();
 	}
 	else {
 	if (direction == Direction::up) {
@@ -252,4 +261,39 @@ Tile& Dot::getCurrentTile()
 void Dot::setPath(std::stack<Direction> aStar)
 {
 	path = aStar;
+}
+
+void Dot::decisionMaking()
+{
+		lookForCoins();
+	
+}
+
+void Dot::lookForCoins()
+{
+	for (auto var : knownTiles) {
+		if (var->getBonus()) {
+			setPath(ai->aStar(*var, getCurrentTile()));
+			busy = true;
+			return;
+		}
+	}
+	//todo scouting when not finding coins.
+	std::mt19937 mt{ std::random_device{}() };
+	int amountOfTiles = knownTiles.size() - 1;
+	std::uniform_int_distribution<> die11{ 0,amountOfTiles };
+
+	int tileTarget = -1;
+	tileTarget = die11(mt);
+	setPath(ai->aStar(*knownTiles[tileTarget], getCurrentTile()));
+
+
+}
+
+void Dot::pickUpCoin()
+{
+	if (!moving && busy) {
+		currentTile->pickupBonus();
+		busy = false;
+	}
 }
