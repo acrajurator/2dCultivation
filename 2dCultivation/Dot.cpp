@@ -278,7 +278,6 @@ void Dot::lookForCoins()
 			return;
 		}
 	}
-	//todo scouting when not finding coins.
 	std::mt19937 mt{ std::random_device{}() };
 	int amountOfTiles = knownTiles.size() - 1;
 	std::uniform_int_distribution<> die11{ 0,amountOfTiles };
