@@ -32,7 +32,8 @@ void Input::handleEvent(SDL_Event& e, Dot& dot, Map& map, SDL_Rect& camera, AI& 
 			try {
 				dest = &map.getTileClick(x, y);
 				std::cout << dest->getType();
-				ai.aStar(dot.getCurrentTile(), *dest);
+				dot.setPath(ai.aStar(*dest, dot.getCurrentTile()));
+				
 			}
 			catch (int x) {
 				std::cerr << "We caught an int exception with value: " << x << '\n';

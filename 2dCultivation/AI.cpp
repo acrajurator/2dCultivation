@@ -9,18 +9,17 @@ double AI::distance(Tile& a, Tile& b)
 	int y1 = a.getBox().y;
 	int x2 = b.getBox().x;
 	int y2 = b.getBox().y;
-	// Calculating distance
 	return sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2) * 1.0);
 }
 
-std::vector<Direction> AI::aStar(Tile& player, Tile& dest) {
-	std::vector<Direction> empty;
+std::stack<Direction> AI::aStar(Tile& player, Tile& dest) {
+	std::stack<Direction> finalPath;
 
 
 	//already at destination
 	if (&player == &dest) {
 		std::cout << "Already at location\n";
-		return empty;
+		return finalPath;
 	}
 
 	Tile* currentTile = &player;
@@ -39,11 +38,24 @@ std::vector<Direction> AI::aStar(Tile& player, Tile& dest) {
 
 		if (currentTile == &dest) {
 			std::cout << "Done Finding path\n";
-			openList.empty();
-			closedList.empty();
-			currentTile = nullptr;
-			child = nullptr;
-			return empty;
+			player.setPath(Direction::none);
+			Direction step{ Direction::up };
+			while (true) {
+				step = currentTile->getPath();
+				if (step != Direction::none) {
+					finalPath.push(step);
+					currentTile = &currentTile->getNeighbour(currentTile->getPath());
+				}
+				else {
+					openList.empty();
+					closedList.empty();
+					currentTile = nullptr;
+					child = nullptr;
+					return finalPath;
+				}
+
+			}
+
 		}
 
 
@@ -75,6 +87,7 @@ std::vector<Direction> AI::aStar(Tile& player, Tile& dest) {
 					child->setGCost(gCostChild);
 					child->setHCost(hCostChild);
 					child->setFCost(fCostChild);
+					child->setPath(Direction::down);
 					openList.push_back(child);
 				}
 
@@ -110,6 +123,7 @@ std::vector<Direction> AI::aStar(Tile& player, Tile& dest) {
 					child->setGCost(gCostChild);
 					child->setHCost(hCostChild);
 					child->setFCost(fCostChild);
+					child->setPath(Direction::up);
 					openList.push_back(child);
 				}
 
@@ -144,6 +158,7 @@ std::vector<Direction> AI::aStar(Tile& player, Tile& dest) {
 					child->setGCost(gCostChild);
 					child->setHCost(hCostChild);
 					child->setFCost(fCostChild);
+					child->setPath(Direction::right);
 					openList.push_back(child);
 				}
 
@@ -178,6 +193,7 @@ std::vector<Direction> AI::aStar(Tile& player, Tile& dest) {
 					child->setGCost(gCostChild);
 					child->setHCost(hCostChild);
 					child->setFCost(fCostChild);
+					child->setPath(Direction::left);
 					openList.push_back(child);
 				}
 

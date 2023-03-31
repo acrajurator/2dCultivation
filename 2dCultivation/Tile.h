@@ -41,9 +41,10 @@ public:
 	double getGCost();
 	double getHCost();
 	double getFCost();
-	void setParent(Tile& parent);
-	Tile& getParent();
 	static bool compareFCost(Tile* a, Tile* b);
+	void setPath(Direction path);
+	Direction getPath();
+
 private:
 	SDL_Rect mBox;
 
@@ -51,12 +52,11 @@ private:
 
 	Tile* tiles[4];
 
-
+	Direction path;
 	bool bonus;
 
 	int mType;
 	double gCost;
 	double hCost;
 	double fCost;
-	Tile* parent;
 };

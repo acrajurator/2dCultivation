@@ -10,6 +10,7 @@ Dot::Dot()
 	currentTile = NULL;
 	startLocation = 0;
 	viewDistance = 1;
+	moving = false;
 }
 
 Dot::~Dot()
@@ -21,7 +22,13 @@ Dot::~Dot()
 
 void Dot::move(Map* map, float timeStep)
 {
-
+	if (!moving && !path.empty()) {
+		moveDirection(path.top());
+		path.pop();
+		moving = true;
+		
+	}
+	else {
 	if (direction == Direction::up) {
 		mBox.y -= DOT_VEL * timeStep;
 		if (mBox.y < startLocation - TILE_HEIGHT) {
@@ -47,7 +54,7 @@ void Dot::move(Map* map, float timeStep)
 			setTile(currentTile->getNeighbour(Direction::right));
 		}
 	}
-
+	}
 }
 
 void Dot::setCamera(SDL_Rect& camera)
@@ -127,6 +134,7 @@ void Dot::setTile(Tile& tile)
 		mBox.y = tileBox.y+(TILE_WIDTH/2);
 		mBox.x = tileBox.x+(TILE_HEIGHT/2);
 		direction = Direction::none;
+		moving = false;
 	
 		updateKnownTiles();
 		printKnownTilesTypes();
@@ -239,4 +247,9 @@ void Dot::pickupBonus()
 Tile& Dot::getCurrentTile()
 {
 	return *currentTile;
+}
+
+void Dot::setPath(std::stack<Direction> aStar)
+{
+	path = aStar;
 }

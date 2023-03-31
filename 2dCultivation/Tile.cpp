@@ -214,17 +214,19 @@ double Tile::getFCost()
 	return fCost;
 }
 
-void Tile::setParent(Tile& parentNew)
-{
-	parent = &parentNew;
-}
 
-Tile& Tile::getParent()
-{
-	return *parent;
-}
 bool Tile::compareFCost(Tile* a, Tile* b)
 {
 
 	return a->getFCost() > b->getFCost();
+}
+
+void Tile::setPath(Direction pathAI)
+{
+	path = pathAI;
+}
+
+Direction Tile::getPath()
+{
+	return path;
 }

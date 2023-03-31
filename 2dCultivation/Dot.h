@@ -6,6 +6,7 @@
 #include "Map.h"
 #include "Direction.h"
 #include <vector>
+#include <stack>
 
 class Dot
 {
@@ -13,7 +14,7 @@ public:
 	static const int DOT_WIDTH = 20;
 	static const int DOT_HEIGHT = 20;
 
-	static const int DOT_VEL = 640;
+	static const int DOT_VEL = 222;
 
 	Dot();
 
@@ -42,13 +43,15 @@ public:
 
 	Tile& getCurrentTile();
 
+	void setPath(std::stack<Direction> aStar);
+
 private:
 	SDL_Rect mBox;
-
+	bool moving;
 	Direction direction;
 	Tile* currentTile;
 	int startLocation;
 	int viewDistance;
-
+	std::stack<Direction> path;
 	std::vector<Tile*> knownTiles;
 };
