@@ -48,7 +48,7 @@ public:
 
 	void decisionMaking();
 
-	void lookForCoins();
+	void lookForJob();
 
 	void pickUpCoin();
 
@@ -59,6 +59,7 @@ private:
 	bool moving;
 	bool busy;
 	Direction direction;
+	JobTypes currentJob;
 	Tile* currentTile;
 	int startLocation;
 	int viewDistance;

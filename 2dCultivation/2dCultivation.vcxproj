@@ -154,6 +154,7 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="LTexture.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="JobTypes.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>

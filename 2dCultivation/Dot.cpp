@@ -7,6 +7,7 @@ Dot::Dot(AI& aiNew)
 	mBox.w = DOT_WIDTH;
 	mBox.h = DOT_HEIGHT;
 	direction = Direction::none;
+	currentJob = JobTypes::none;
 	currentTile = NULL;
 	startLocation = 0;
 	viewDistance = 1;
@@ -249,7 +250,7 @@ Direction Dot::getDirection()
 
 void Dot::pickupBonus()
 {
-	currentTile->pickupBonus();
+	currentTile->pickup(JobTypes::collect);
 }
 
 Tile& Dot::getCurrentTile()
@@ -264,14 +265,26 @@ void Dot::setPath(std::stack<Direction> aStar)
 
 void Dot::decisionMaking()
 {
-		lookForCoins();
+
+	std::mt19937 mt{ std::random_device{}() };
+	std::uniform_int_distribution<> die11{ 0, 3 };
+	int action = die11(mt);
+	if (action == 0)
+		currentJob = JobTypes::collect;
+	else if (action ==1)
+		currentJob = JobTypes::kill;
+	else if (action == 2)
+		currentJob = JobTypes::explore;
+	else if (action == 3)
+		currentJob = JobTypes::patrol;
 	
+	lookForJob();
 }
 
-void Dot::lookForCoins()
+void Dot::lookForJob()
 {
 	for (auto var : knownTiles) {
-		if (var->getBonus()) {
+		if (var->getBonus(currentJob)) {
 			setPath(ai->aStar(*var, getCurrentTile()));
 			busy = true;
 			return;
@@ -291,7 +304,8 @@ void Dot::lookForCoins()
 void Dot::pickUpCoin()
 {
 	if (!moving && busy) {
-		currentTile->pickupBonus();
+		currentTile->pickup(currentJob);
 		busy = false;
+		currentJob = JobTypes::none;
 	}
 }

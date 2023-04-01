@@ -4,6 +4,7 @@
 #include "Defs.h"
 #include "LTexture.h"
 #include "Direction.h"
+#include "JobTypes.h"
 
 
 
@@ -17,7 +18,7 @@ public:
 
 	Tile(int x, int y, int tileType, SDL_Rect clip);
 
-	void render(SDL_Rect& camera, LTexture& gTileTexture, SDL_Renderer& gRenderer, LTexture& gDotTexture);
+	void render(SDL_Rect& camera, LTexture& gTileTexture, SDL_Renderer& gRenderer, LTexture& gDotTexture, LTexture& gDotRedTexture, LTexture& gDotGreyTexture, LTexture& gDotPurpleTexture);
 
 	int getType();
 
@@ -33,8 +34,8 @@ public:
 
 	void setNeighbour(Tile& tile, Direction direction);
 
-	void pickupBonus();
-	bool getBonus();
+	void pickup(JobTypes type);
+	bool getBonus(JobTypes type);
 
 	void setGCost(double gCost);
 	void setHCost(double hCost);
@@ -55,7 +56,10 @@ private:
 	Tile* tiles[4];
 
 	Direction path;
-	bool bonus;
+	bool collectTarget;
+	bool killTarget;
+	bool exploreTarget;
+	bool patrolTarget;
 
 	int mType;
 	double gCost;

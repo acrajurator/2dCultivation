@@ -28,15 +28,24 @@ Tile::Tile(int x, int y, int tileType, SDL_Rect clip)
 	{
 		tiles[i] = nullptr;
 	}
-	bonus = true;
+	collectTarget = true;
+	killTarget = true;
+	exploreTarget = true;
+	patrolTarget = true;
 }
-void Tile::render(SDL_Rect& camera, LTexture& gTileTexture, SDL_Renderer& gRenderer, LTexture& gDotTexture)
+void Tile::render(SDL_Rect& camera, LTexture& gTileTexture, SDL_Renderer& gRenderer, LTexture& gDotTexture, LTexture& gDotRedTexture, LTexture& gDotGreyTexture, LTexture& gDotPurpleTexture)
 {
 	if (checkCollision(camera))
 	{
 		gTileTexture.render(mBox.x - camera.x, mBox.y - camera.y, gRenderer, &textureClip);
-		if (bonus)
+		if (collectTarget)
 			gDotTexture.render(mBox.x - camera.x, mBox.y - camera.y, gRenderer);
+		if (killTarget)
+			gDotRedTexture.render(mBox.x + TILE_WIDTH - 20 - camera.x, mBox.y + TILE_HEIGHT - 20 - camera.y, gRenderer);
+		if (exploreTarget)
+			gDotGreyTexture.render(mBox.x - camera.x, mBox.y+TILE_HEIGHT-20 - camera.y, gRenderer);
+		if (patrolTarget)
+			gDotPurpleTexture.render(mBox.x+TILE_WIDTH-20 - camera.x, mBox.y - camera.y, gRenderer);
 	}
 }
 
@@ -179,14 +188,35 @@ void Tile::setNeighbour(Tile& tile, Direction direction)
 	}
 }
 
-void Tile::pickupBonus()
+void Tile::pickup(JobTypes type)
 {
-	bonus = false;
+
+	if (type == JobTypes::collect)
+		collectTarget = false;
+
+	if (type == JobTypes::kill)
+	 killTarget = false;
+
+	if (type == JobTypes::explore)
+	 exploreTarget = false;
+
+	if (type == JobTypes::patrol)
+	 patrolTarget = false;
 }
 
-bool Tile::getBonus()
-{ 
-	return bonus;
+bool Tile::getBonus(JobTypes type)
+{
+	if (type == JobTypes::collect)
+		return collectTarget;
+
+	if (type == JobTypes::kill)
+		return killTarget;
+
+	if (type == JobTypes::explore)
+		return exploreTarget;
+
+	if (type == JobTypes::patrol)
+		return patrolTarget;
 }
 
 void Tile::setGCost(double gCostNew)

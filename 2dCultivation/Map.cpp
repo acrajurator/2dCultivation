@@ -121,13 +121,13 @@ Tile& Map::getTileClick(int x, int y)
 }
 
 
-void Map::render(SDL_Rect& camera, LTexture& gTileTexture, SDL_Renderer& gRenderer, LTexture& gDotTexture)
+void Map::render(SDL_Rect& camera, LTexture& gTileTexture, SDL_Renderer& gRenderer, LTexture& gDotTexture, LTexture& gDotRedTexture, LTexture& gDotGreyTexture, LTexture& gDotPurpleTexture)
 {
 	for (int i = 0; i < TILE_ROW; ++i)
 	{
 		for (int j = 0; j < TILE_COL; ++j)
 		{
-			worldMap[i][j].render(camera, gTileTexture, gRenderer, gDotTexture);
+			worldMap[i][j].render(camera, gTileTexture, gRenderer, gDotTexture, gDotRedTexture, gDotGreyTexture, gDotPurpleTexture);
 		}
 	}
 }

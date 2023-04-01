@@ -26,6 +26,9 @@ bool setTiles();
 SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
 LTexture gDotTexture;
+LTexture gDotGreyTexture;
+LTexture gDotRedTexture;
+LTexture gDotPurpleTexture;
 LTexture gTileTexture;
 SDL_Rect gTileClips[TOTAL_TILE_SPRITES];
 Map map;
@@ -88,7 +91,21 @@ bool loadMedia()
 		printf("Failed to load dot texture!\n");
 		success = false;
 	}
-
+	if (!gDotGreyTexture.loadFromFile("dotgrey.bmp", *gRenderer))
+	{
+		printf("Failed to load dot texture!\n");
+		success = false;
+	}
+	if (!gDotRedTexture.loadFromFile("dotred.bmp", *gRenderer))
+	{
+		printf("Failed to load dot texture!\n");
+		success = false;
+	}
+	if (!gDotPurpleTexture.loadFromFile("dotpurple.bmp", *gRenderer))
+	{
+		printf("Failed to load dot texture!\n");
+		success = false;
+	}
 	if (!gTileTexture.loadFromFile("tiles.png", *gRenderer))
 	{
 		printf("Failed to load tile set texture!\n");
@@ -108,6 +125,10 @@ void close()
 {
 	 map.closeMap();
 
+	gDotPurpleTexture.free();
+	gDotRedTexture.free();
+	gDotGreyTexture.free();
+	gDotTexture.free();
 	gDotTexture.free();
 	gTileTexture.free();
 
@@ -242,7 +263,7 @@ int main(int argc, char* args[])
 				SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(gRenderer);
 
-				map.render(camera, gTileTexture, *gRenderer, gDotTexture);
+				map.render(camera, gTileTexture, *gRenderer, gDotTexture, gDotRedTexture, gDotGreyTexture, gDotPurpleTexture);
 
 				dot.render(camera, gDotTexture, *gRenderer);
 

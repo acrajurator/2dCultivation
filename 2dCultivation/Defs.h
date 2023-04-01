@@ -1,8 +1,8 @@
 #pragma once
 
 //Screen dimension constants
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 1200;
+const int SCREEN_HEIGHT = 800;
 
 //The dimensions of the level
 //col or row * tile width or height
