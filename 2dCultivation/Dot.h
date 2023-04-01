@@ -28,7 +28,7 @@ public:
 
 	void render(SDL_Rect& camera, LTexture& gDotTexture, SDL_Renderer& gRenderer);
 
-	bool checkCollision(SDL_Rect a, SDL_Rect b);
+	bool checkCollision(SDL_Rect a);
 
 	void setTile(Tile& tile);
 
@@ -51,6 +51,7 @@ public:
 	void lookForCoins();
 
 	void pickUpCoin();
+
 
 private:
 	AI* ai;

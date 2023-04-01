@@ -213,9 +213,8 @@ int main(int argc, char* args[])
 			SDL_Event e;
 			Input input;
 			Dot dot{ai};
-			dot.setTile(map.getTile(1, 1));
+			dot.setTile(map.getTile(10, 10));
 			SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
-
 
 
 			while (!quit)
@@ -233,6 +232,7 @@ int main(int argc, char* args[])
 					input.handleEvent(e,dot, map, camera, ai);
 				}
 
+
 				float timeStep = timer.getTicks() / 1000.f;
 				dot.move(&map, timeStep);
 				timer.start();
@@ -247,6 +247,7 @@ int main(int argc, char* args[])
 				dot.render(camera, gDotTexture, *gRenderer);
 
 				SDL_RenderPresent(gRenderer);
+
 			}
 		}
 

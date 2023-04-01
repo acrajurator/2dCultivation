@@ -103,6 +103,7 @@ void LTexture::setAlpha(Uint8 alpha)
 
 void LTexture::render(int x, int y, SDL_Renderer& gRenderer, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip)
 {
+
 	SDL_Rect renderQuad = { x, y, mWidth, mHeight };
 
 	if (clip != NULL)

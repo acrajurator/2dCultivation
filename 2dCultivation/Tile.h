@@ -46,6 +46,7 @@ public:
 	void setPath(Direction path);
 	Direction getPath();
 
+
 private:
 	SDL_Rect mBox;
 

@@ -91,11 +91,10 @@ void Dot::setCamera(SDL_Rect& camera)
 
 void Dot::render(SDL_Rect& camera, LTexture& gDotTexture, SDL_Renderer& gRenderer)
 {
+
 	gDotTexture.render(mBox.x - camera.x, mBox.y - camera.y, gRenderer);
 }
-
-
-bool Dot::checkCollision(SDL_Rect a, SDL_Rect b)
+bool Dot::checkCollision(SDL_Rect a)
 {
 	int leftA, leftB;
 	int rightA, rightB;
@@ -107,10 +106,10 @@ bool Dot::checkCollision(SDL_Rect a, SDL_Rect b)
 	topA = a.y;
 	bottomA = a.y + a.h;
 
-	leftB = b.x;
-	rightB = b.x + b.w;
-	topB = b.y;
-	bottomB = b.y + b.h;
+	leftB = mBox.x;
+	rightB = mBox.x + mBox.w;
+	topB = mBox.y;
+	bottomB = mBox.y + mBox.h;
 
 	if (bottomA <= topB)
 	{
@@ -131,9 +130,9 @@ bool Dot::checkCollision(SDL_Rect a, SDL_Rect b)
 	{
 		return false;
 	}
-
 	return true;
 }
+
 
 void Dot::setTile(Tile& tile)
 {

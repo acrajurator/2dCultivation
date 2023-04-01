@@ -235,3 +235,4 @@ Direction Tile::getPath()
 {
 	return path;
 }
+
