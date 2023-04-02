@@ -31,6 +31,7 @@ LTexture gDotGreyTexture;
 LTexture gDotRedTexture;
 LTexture gDotPurpleTexture;
 LTexture gTileTexture;
+LTexture gSpaceTexture;
 SDL_Rect gTileClips[TOTAL_TILE_SPRITES];
 Map map;
 Timer timer;
@@ -86,7 +87,11 @@ bool init()
 bool loadMedia()
 {
 	bool success = true;
-
+	if (!gSpaceTexture.loadFromFile("spacepic.jpg", *gRenderer))
+	{
+		printf("Failed to load dot texture!\n");
+		success = false;
+	}
 	if (!gDotTexture.loadFromFile("dot.bmp", *gRenderer))
 	{
 		printf("Failed to load dot texture!\n");
@@ -125,7 +130,7 @@ bool loadMedia()
 void close()
 {
 	 map.closeMap();
-
+	 gSpaceTexture.free();
 	gDotPurpleTexture.free();
 	gDotRedTexture.free();
 	gDotGreyTexture.free();
@@ -238,7 +243,7 @@ int main(int argc, char* args[])
 			dot.setTile(map.getTile(10, 10));
 			Camera camera{};
 
-
+			int scrollingOffset = 0;
 			while (!quit)
 			{
 
@@ -258,12 +263,21 @@ int main(int argc, char* args[])
 				float timeStep = timer.getTicks() / 1000.f;
 				dot.move(&map, timeStep);
 				camera.setCamera(timeStep);
+
+				//Scroll background
+				--scrollingOffset;
+				if (scrollingOffset < -gSpaceTexture.getWidth())
+				{
+					scrollingOffset = 0;
+				}
 				timer.start();
 
 
 				SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 0);
 				SDL_RenderClear(gRenderer);
 
+				gSpaceTexture.render(scrollingOffset, 0, *gRenderer);
+				gSpaceTexture.render(scrollingOffset + gSpaceTexture.getWidth(), 0, *gRenderer);
 				map.render(camera.getCamera(), gTileTexture, *gRenderer, gDotTexture, gDotRedTexture, gDotGreyTexture, gDotPurpleTexture);
 
 				dot.render(camera.getCamera(), gDotTexture, *gRenderer);
