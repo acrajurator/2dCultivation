@@ -32,11 +32,14 @@ Tile::Tile(int x, int y, int tileType, SDL_Rect clip)
 	killTarget = true;
 	exploreTarget = true;
 	patrolTarget = true;
+	fogOfWar = true;
 }
 void Tile::render(SDL_Rect& camera, LTexture& gTileTexture, SDL_Renderer& gRenderer, LTexture& gDotTexture, LTexture& gDotRedTexture, LTexture& gDotGreyTexture, LTexture& gDotPurpleTexture)
 {
 	if (checkCollision(camera))
 	{
+		if (FOGOFWAR && fogOfWar)
+			return;
 		gTileTexture.render(mBox.x - camera.x, mBox.y - camera.y, gRenderer, &textureClip);
 		if (collectTarget)
 			gDotTexture.render(mBox.x - camera.x, mBox.y - camera.y, gRenderer);
@@ -264,5 +267,15 @@ void Tile::setPath(Direction pathAI)
 Direction Tile::getPath()
 {
 	return path;
+}
+
+void Tile::setFog(bool fog)
+{
+	fogOfWar = fog;
+}
+
+bool Tile::getFog()
+{
+	return fogOfWar;
 }
 

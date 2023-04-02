@@ -46,7 +46,8 @@ public:
 	static bool compareFCost(Tile* a, Tile* b);
 	void setPath(Direction path);
 	Direction getPath();
-
+	void setFog(bool fog);
+	bool getFog();
 
 private:
 	SDL_Rect mBox;
@@ -60,7 +61,7 @@ private:
 	bool killTarget;
 	bool exploreTarget;
 	bool patrolTarget;
-
+	bool fogOfWar;
 	int mType;
 	double gCost;
 	double hCost;

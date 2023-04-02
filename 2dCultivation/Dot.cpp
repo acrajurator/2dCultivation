@@ -148,7 +148,6 @@ void Dot::updateKnownTiles()
 {
 	int distanceUp{ 0 };
 	int distanceDown{ 0 };
-
 	knownTiles.clear();
 	Tile* testTile = currentTile;
 	Tile* testTileUp = currentTile;
@@ -156,6 +155,8 @@ void Dot::updateKnownTiles()
 		for (int x = 0; x < viewDistance; ++x) {
 			if (testTile->validNeighbour(Direction::up)) {
 				testTile = &testTile->getNeighbour((Direction::up));
+				if (FOGOFWAR)
+					testTile->setFog(false);
 				knownTiles.push_back(testTile);
 				distanceUp += 1;
 			}
@@ -164,6 +165,8 @@ void Dot::updateKnownTiles()
 		for (int x = 0; x < viewDistance; ++x) {
 			if (testTile->validNeighbour(Direction::down)) {
 				testTile = &testTile->getNeighbour((Direction::down));
+				if (FOGOFWAR)
+					testTile->setFog(false);
 				knownTiles.push_back(testTile);
 				distanceDown += 1;
 			}
@@ -173,15 +176,21 @@ void Dot::updateKnownTiles()
 		for (int x = 0; x < viewDistance; ++x) {
 			if (testTile->validNeighbour(Direction::left)) {
 				testTile = &testTile->getNeighbour((Direction::left));
+				if (FOGOFWAR)
+					testTile->setFog(false);
 				knownTiles.push_back(testTile);
 				testTileUp = testTile;
 				for (int i = 0; i < distanceUp; ++i) {
 					testTileUp = &testTileUp->getNeighbour((Direction::up));
+					if (FOGOFWAR)
+						testTile->setFog(false);
 					knownTiles.push_back(testTileUp);
 				}
 				testTileDown = testTile;
 				for (int i = 0; i < distanceDown; ++i) {
 					testTileDown = &testTileDown->getNeighbour((Direction::down));
+					if (FOGOFWAR)
+						testTile->setFog(false);
 					knownTiles.push_back(testTileDown);
 				}
 
@@ -192,16 +201,22 @@ void Dot::updateKnownTiles()
 		for (int x = 0; x < viewDistance; ++x) {
 			if (testTile->validNeighbour(Direction::right)) {
 				testTile = &testTile->getNeighbour((Direction::right));
+				if (FOGOFWAR)
+					testTile->setFog(false);
 				knownTiles.push_back(testTile);
 
 				testTileUp = testTile;
 				for (int i = 0; i < distanceUp; ++i) {
 					testTileUp = &testTileUp->getNeighbour((Direction::up));
+					if (FOGOFWAR)
+						testTile->setFog(false);
 					knownTiles.push_back(testTileUp);
 				}
 				testTileDown = testTile;
 				for (int i = 0; i < distanceDown; ++i) {
 					testTileDown = &testTileDown->getNeighbour((Direction::down));
+					if (FOGOFWAR)
+						testTile->setFog(false);
 					knownTiles.push_back(testTileDown);
 				}
 			}
