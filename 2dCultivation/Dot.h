@@ -24,8 +24,6 @@ public:
 
 	void move(Map* map, float timeStep);
 
-	void setCamera(SDL_Rect& camera);
-
 	void render(SDL_Rect& camera, LTexture& gDotTexture, SDL_Renderer& gRenderer);
 
 	bool checkCollision(SDL_Rect a);

@@ -3,6 +3,7 @@
 //Screen dimension constants
 const int SCREEN_WIDTH = 1200;
 const int SCREEN_HEIGHT = 800;
+const int CAMERA_VEL = 500;
 
 //The dimensions of the level
 //col or row * tile width or height

@@ -13,6 +13,7 @@
 #include "Map.h"
 #include "Input.h"
 #include "AI.h"
+#include "Camera.h"
 
 
 bool init();
@@ -235,7 +236,7 @@ int main(int argc, char* args[])
 			Input input;
 			Dot dot{ai};
 			dot.setTile(map.getTile(10, 10));
-			SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+			Camera camera{};
 
 
 			while (!quit)
@@ -256,16 +257,16 @@ int main(int argc, char* args[])
 
 				float timeStep = timer.getTicks() / 1000.f;
 				dot.move(&map, timeStep);
+				camera.setCamera(timeStep);
 				timer.start();
 
-				dot.setCamera(camera);
 
 				SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(gRenderer);
 
-				map.render(camera, gTileTexture, *gRenderer, gDotTexture, gDotRedTexture, gDotGreyTexture, gDotPurpleTexture);
+				map.render(camera.getCamera(), gTileTexture, *gRenderer, gDotTexture, gDotRedTexture, gDotGreyTexture, gDotPurpleTexture);
 
-				dot.render(camera, gDotTexture, *gRenderer);
+				dot.render(camera.getCamera(), gDotTexture, *gRenderer);
 
 				SDL_RenderPresent(gRenderer);
 

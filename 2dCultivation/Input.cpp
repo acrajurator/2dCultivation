@@ -1,8 +1,9 @@
 #include "Input.h"
 #include <iostream>
+#include "Camera.h"
 
 
-void Input::handleEvent(SDL_Event& e, Dot& dot, Map& map, SDL_Rect& camera, AI& ai)
+void Input::handleEvent(SDL_Event& e, Dot& dot, Map& map, Camera& camera, AI& ai)
 {
 		if (e.type == SDL_KEYDOWN && e.key.repeat == 0 && dot.getDirection() == Direction::none)
 		{
@@ -26,8 +27,8 @@ void Input::handleEvent(SDL_Event& e, Dot& dot, Map& map, SDL_Rect& camera, AI& 
 			int x, y;
 
 			SDL_GetMouseState(&x, &y);
-			x += camera.x;
-			y += camera.y;
+			x += camera.getCamera().x;
+			y += camera.getCamera().y;
 			Tile* dest;
 			try {
 				dest = &map.getTileClick(x, y);
@@ -40,6 +41,15 @@ void Input::handleEvent(SDL_Event& e, Dot& dot, Map& map, SDL_Rect& camera, AI& 
 			}
 			//
 			dest = nullptr;
+		}
+		if (e.type == SDL_MOUSEMOTION) {
+
+			int x, y;
+
+			SDL_GetMouseState(&x, &y);
+
+			camera.setDirection(x, y);
+
 		}
 
 	

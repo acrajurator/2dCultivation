@@ -67,28 +67,6 @@ void Dot::move(Map* map, float timeStep)
 	}
 }
 
-void Dot::setCamera(SDL_Rect& camera)
-{
-	camera.x = (mBox.x + DOT_WIDTH / 2) - SCREEN_WIDTH / 2;
-	camera.y = (mBox.y + DOT_HEIGHT / 2) - SCREEN_HEIGHT / 2;
-
-	if (camera.x < 0)
-	{
-		camera.x = 0;
-	}
-	if (camera.y < 0)
-	{
-		camera.y = 0;
-	}
-	if (camera.x > LEVEL_WIDTH - camera.w)
-	{
-		camera.x = LEVEL_WIDTH - camera.w;
-	}
-	if (camera.y > LEVEL_HEIGHT - camera.h)
-	{
-		camera.y = LEVEL_HEIGHT - camera.h;
-	}
-}
 
 void Dot::render(SDL_Rect& camera, LTexture& gDotTexture, SDL_Renderer& gRenderer)
 {
@@ -146,7 +124,7 @@ void Dot::setTile(Tile& tile)
 		moving = false;
 	
 		updateKnownTiles();
-		printKnownTilesTypes();
+		//printKnownTilesTypes();
 
 }
 

@@ -37,7 +37,7 @@ std::stack<Direction> AI::aStar(Tile& player, Tile& dest) {
 		openList.pop_back();
 
 		if (currentTile == &dest) {
-			std::cout << "Done Finding path\n";
+			//std::cout << "Done Finding path\n";
 			player.setPath(Direction::none);
 			Direction step{ Direction::up };
 			while (true) {
