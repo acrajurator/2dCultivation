@@ -243,7 +243,7 @@ int main(int argc, char* args[])
 			dot.setTile(map.getTile(10, 10));
 			Camera camera{};
 
-			int scrollingOffset = 0;
+			//int scrollingOffset = 0;
 			while (!quit)
 			{
 
@@ -264,20 +264,20 @@ int main(int argc, char* args[])
 				dot.move(&map, timeStep);
 				camera.setCamera(timeStep);
 
-				//Scroll background
-				--scrollingOffset;
-				if (scrollingOffset < -gSpaceTexture.getWidth())
-				{
-					scrollingOffset = 0;
-				}
+				////Scroll background
+				//--scrollingOffset;
+				//if (scrollingOffset < -gSpaceTexture.getWidth())
+				//{
+				//	scrollingOffset = 0;
+				//}
 				timer.start();
 
 
 				SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 0);
 				SDL_RenderClear(gRenderer);
-
+				/*SDL_RendererFlip flip = SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL;
 				gSpaceTexture.render(scrollingOffset, 0, *gRenderer);
-				gSpaceTexture.render(scrollingOffset + gSpaceTexture.getWidth(), 0, *gRenderer);
+				gSpaceTexture.render(scrollingOffset + gSpaceTexture.getWidth(), 0, *gRenderer);*/
 				map.render(camera.getCamera(), gTileTexture, *gRenderer, gDotTexture, gDotRedTexture, gDotGreyTexture, gDotPurpleTexture);
 
 				dot.render(camera.getCamera(), gDotTexture, *gRenderer);
