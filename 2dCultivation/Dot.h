@@ -15,7 +15,7 @@ public:
 	static const int DOT_WIDTH = 20;
 	static const int DOT_HEIGHT = 20;
 
-	static const int DOT_VEL = 222;
+	static const int DOT_VEL = 20;
 
 	Dot(AI& ai);
 
@@ -53,7 +53,7 @@ public:
 
 private:
 	AI* ai;
-	SDL_Rect mBox;
+	SDL_FRect mBox;
 	bool moving;
 	bool busy;
 	Direction direction;

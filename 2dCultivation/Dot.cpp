@@ -30,22 +30,28 @@ void Dot::move(Map* map, float timeStep)
 		moveDirection(path.top());
 		path.pop();
 		moving = true;
+		std::cout << "moving\n";
 		
 	}
 	if (!moving && busy) {
+		std::cout << "Picking up coin\n";
 		pickUpCoin();
 	}
 	else if(!busy && !moving) {
+		std::cout << "Making decision\n";
 		decisionMaking();
 	}
 	else {
 	if (direction == Direction::up) {
+
 		mBox.y -= DOT_VEL * timeStep;
 		if (mBox.y < startLocation - TILE_HEIGHT) {
+
 			setTile(currentTile->getNeighbour(Direction::up));
 		}
 	}
 	else if (direction == Direction::left) {
+
 		mBox.x -= DOT_VEL * timeStep;
 		if (mBox.x < startLocation - TILE_WIDTH) {
 			setTile(currentTile->getNeighbour(Direction::left));
@@ -53,12 +59,15 @@ void Dot::move(Map* map, float timeStep)
 	}
 	else if (direction == Direction::down) {
 		mBox.y += DOT_VEL * timeStep;
+
+		std::cout << mBox.y << "\n";
 		if (mBox.y > startLocation + TILE_HEIGHT) {
 			setTile(currentTile->getNeighbour(Direction::down));
 		}
 
 	}
 	else if (direction == Direction::right) {
+
 		mBox.x += DOT_VEL * timeStep;
 		if (mBox.x > startLocation + TILE_WIDTH) {
 			setTile(currentTile->getNeighbour(Direction::right));
@@ -134,10 +143,13 @@ void Dot::moveDirection(Direction desiredDirection)
 	{
 		if (desiredDirection == Direction::up || desiredDirection == Direction::down) {
 			startLocation = mBox.y;
+
+			std::cout << "start location y\n";
 		}
 		else {
 			startLocation = mBox.x;
 
+			std::cout << "start location x\n";
 		}
 		direction = desiredDirection;
 	}
@@ -271,18 +283,27 @@ void Dot::decisionMaking()
 	else if (action == 3)
 		currentJob = JobTypes::patrol;
 	
+
 	lookForJob();
 }
 
 void Dot::lookForJob()
 {
+
+	std::cout << "Looking for job \n";
+	bool foundJob{ false };
+
 	for (auto var : knownTiles) {
 		if (var->getBonus(currentJob)) {
+			foundJob = true;
 			setPath(ai->aStar(*var, getCurrentTile()));
 			busy = true;
 			return;
 		}
 	}
+
+
+	std::cout << "Doing rng \n";
 	std::mt19937 mt{ std::random_device{}() };
 	int amountOfTiles = knownTiles.size() - 1;
 	std::uniform_int_distribution<> die11{ 0,amountOfTiles };

@@ -290,8 +290,9 @@ int main(int argc, char* args[])
 
 				SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 0);
 				SDL_RenderClear(gRenderer);
-				gSpaceTexture.render(scrollingOffsetX, 0, *gRenderer, NULL, 0.0, NULL, flip2);
-				gSpaceTexture.render(scrollingOffsetX + gSpaceTexture.getWidth(), 0, *gRenderer, NULL, 0.0, NULL, flip);
+				//scrolling background pic
+				//gSpaceTexture.render(scrollingOffsetX, 0, *gRenderer, NULL, 0.0, NULL, flip2);
+				//gSpaceTexture.render(scrollingOffsetX + gSpaceTexture.getWidth(), 0, *gRenderer, NULL, 0.0, NULL, flip);
 				map.render(camera.getCamera(), gTileTexture, *gRenderer, gDotTexture, gDotRedTexture, gDotGreyTexture, gDotPurpleTexture);
 
 				dot.render(camera.getCamera(), gDotTexture, *gRenderer);
